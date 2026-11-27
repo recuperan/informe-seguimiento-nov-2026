@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Informe Gerencial — Seguimiento Tres Segmentos · Avance Noviembre 2026 (corte 25 Nov)</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  :root {
+    --bg:#ffffff; --card:#ffffff; --border:#d0d7de; --text:#1a1a2e; --muted:#5a6275;
+    --accent:#0000B3; --red:#F22331; --green:#53CC80; --orange:#FFB000; --purple:#9A4CF5;
+    --blue-tint:#f0f0ff; --green-tint:#f0fdf6; --orange-tint:#fffbee; --red-tint:#fff5f5;
+    --blue-light:#e6e6ff; --green-light:#e8faf0; --red-light:#fde8ea; --orange-light:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;}
+  .header{background:#3B6FD4;color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;}
+  .header h1{font-size:18px;font-weight:700;letter-spacing:0.3px;}
+  .header .subtitle{font-size:12px;color:#e6eeff;margin-top:2px;}
+  .header .badge{background:#F22331;color:#fff;font-size:11px;padding:3px 10px;border-radius:12px;font-weight:600;}
+  .filters-bar{background:var(--card);border-bottom:1px solid var(--border);padding:12px 28px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .filter-group{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .filter-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-right:4px;}
+  .filter-btn{padding:5px 13px;border-radius:16px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:12px;cursor:pointer;font-weight:500;white-space:nowrap;}
+  .filter-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .filter-btn.clear-btn{background:#fde8ea;border-color:#F22331;color:#F22331;font-weight:600;}
+  .filter-btn.clear-btn:hover{background:#F22331;color:#fff;}
+  .filter-divider{width:1px;height:24px;background:var(--border);margin:0 4px;}
+  .active-filters{background:#e6e6ff;padding:6px 28px;border-bottom:1px solid #9999ff;font-size:12px;color:#0000B3;display:none;}
+  .active-filters.visible{display:block;}
+  .main{padding:20px 28px;max-width:1400px;margin:0 auto;}
+  .kpi-section{margin-bottom:24px;}
+  .kpi-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;}
+  .kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;}
+  @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+  .kpi-card{border:1px solid var(--border);border-radius:10px;padding:18px 20px;border-left-width:4px;}
+  .kpi-card.blue{background:transparent;border-left-color:var(--accent);}
+  .kpi-card.green{background:transparent;border-left-color:var(--green);}
+  .kpi-card.orange{background:transparent;border-left-color:var(--orange);}
+  .kpi-card.red{background:transparent;border-left-color:var(--red);}
+  .kpi-card.purple{background:transparent;border-left-color:var(--purple);}
+  .kpi-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+  .kpi-card.blue .kpi-label{color:var(--accent);}
+  .kpi-card.green .kpi-label{color:#1a8c48;}
+  .kpi-card.orange .kpi-label{color:#a07000;}
+  .kpi-card.red .kpi-label{color:var(--red);}
+  .kpi-card.purple .kpi-label{color:#6a2fcf;}
+  .kpi-value{font-size:26px;font-weight:800;line-height:1.1;margin-bottom:6px;}
+  .kpi-card.blue .kpi-value{color:var(--accent);}
+  .kpi-card.green .kpi-value{color:#1a8c48;}
+  .kpi-card.orange .kpi-value{color:#a07000;}
+  .kpi-card.red .kpi-value{color:var(--red);}
+  .kpi-card.purple .kpi-value{color:#6a2fcf;}
+  .kpi-sub{font-size:11px;color:var(--muted);}
+  .section{margin-bottom:24px;}
+  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .section-title{font-size:15px;font-weight:700;color:var(--text);}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media(max-width:1000px){.grid-2{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
+  .card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+  .card-title .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .chart-container{width:100%;height:320px;}
+  .chart-lg{height:380px;}
+  .data-table{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed;}
+  .data-table th{background:#f4f5ff;padding:5px 6px;text-align:left;font-weight:700;color:var(--muted);font-size:10px;text-transform:uppercase;border-bottom:1.5px solid var(--accent);white-space:normal;line-height:1.3;}
+  .data-table td{padding:5px 6px;border-bottom:1px solid #f3f4f6;vertical-align:middle;white-space:nowrap;}
+  .data-table tr:hover td{background:#f8fafc;}
+  .data-table .num{text-align:right;font-variant-numeric:tabular-nums;}
+  #detail-table col.c-rank{width:36px;}#detail-table col.c-adcar{width:130px;}
+  #detail-table col.c-seg{width:90px;}#detail-table col.c-dir{width:76px;}
+  #detail-table col.c-cli{width:40px;}#detail-table col.c-n{width:28px;}
+  #detail-table col.c-pct{width:54px;}#detail-table col.c-sub{width:36px;}
+  #detail-table col.c-money{width:76px;}#detail-table col.c-pctm{width:78px;}#detail-table col.c-tot{width:64px;}#detail-table col.c-pond{width:92px;}
+  .data-table td.sticky,.data-table th.sticky{position:sticky;left:0;background:#fff;z-index:1;box-shadow:2px 0 4px rgba(0,0,0,0.06);}
+  .data-table tr:hover td.sticky{background:#f8fafc;}
+  .seg-badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;white-space:nowrap;}
+  .seg-badge.cons{background:#f0edff;color:#6a2fcf;}
+  .seg-badge.dist{background:#e6e6ff;color:#0000B3;}
+  .seg-badge.indt{background:#fff5d6;color:#996600;}
+  .dir-badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;}
+  .dir-badge.norte{background:#e8faf0;color:#1a7a45;}
+  .dir-badge.centro{background:#fff5d6;color:#996600;}
+  .dir-badge.pacifico{background:#e6f2ff;color:#1a5c9e;}
+  .progress-bar-bg{background:#f3f4f6;border-radius:3px;height:6px;overflow:hidden;}
+  .progress-bar-fill{height:100%;border-radius:3px;}
+  .top-list{display:flex;flex-direction:column;gap:10px;}
+  .top-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;border:1px solid var(--border);}
+  .top-item:hover{background:#f8fafc;}
+  .top-pos{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
+  .top-pos.pos1{background:#0000B3;color:#fff;}.top-pos.pos2{background:#3333cc;color:#fff;}
+  .top-pos.pos3{background:#6666e0;color:#fff;}.top-pos.pos4{background:#e6e6ff;color:#0000B3;}
+  .top-pos.pos5{background:#e6e6ff;color:#0000B3;}
+  .top-info{flex:1;min-width:0;}
+  .top-name{font-weight:600;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .top-meta{font-size:11px;color:var(--muted);margin-top:1px;}
+  .top-val{font-weight:800;font-size:14px;text-align:right;flex-shrink:0;}
+  .top-val.positive{color:#2aaa60;}.top-val.negative{color:var(--red);}
+  .chip{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:600;}
+  .chip.wa{background:#e8faf0;color:#1a7a45;}.chip.correo{background:#e6e6ff;color:#0000B3;}
+  .chip.llamada{background:#fff5d6;color:#996600;}.chip.teams{background:#f0edff;color:#6a2fcf;}
+  .sum-item{background:#f8fafc;border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;}
+  .sum-item strong{font-weight:700;}
+  .no-data{text-align:center;padding:40px;color:var(--muted);font-size:13px;}
+  tr.hidden{display:none;}.top-item.hidden{display:none;}
+  .footer{text-align:center;padding:20px;color:var(--muted);font-size:11px;border-top:1px solid var(--border);margin-top:10px;}
+  .lang-switch{display:inline-flex;border:1px solid rgba(255,255,255,.7);border-radius:12px;overflow:hidden;}
+  .lang-switch button{background:transparent;color:#fff;border:none;padding:3px 9px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.4px;}
+  .lang-switch button.active{background:#fff;color:#3B6FD4;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div style="font-size:18px;font-weight:800;color:#fff;" data-i18n="hdrTitle">📊 Informe Gerencial de Seguimiento</div>
+    <div class="subtitle" data-i18n="hdrSub">Tres Segmentos · Cartera Vencida &amp; Actividades · Avance de Noviembre 2026 (01–25 Nov)</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="badge" data-i18n="badge">Corte 25 Nov 2026</div>
+    <div class="lang-switch" role="group" aria-label="Language / Idioma">
+      <button type="button" id="lang-es" class="active" onclick="setLang('es')" title="Español">ES</button>
+      <button type="button" id="lang-en" onclick="setLang('en')" title="English">EN</button>
+    </div>
+  </div>
+</div>
+
+<div class="filters-bar">
+  <span class="filter-label" data-i18n="fSeg">Segmento</span>
+  <div class="filter-group">
+    <button class="filter-btn" data-type="seg" data-value="Distribucion" onclick="toggleFilter(this)" data-i18n="segDist">Distribución</button>
+    <button class="filter-btn" data-type="seg" data-value="Construccion" onclick="toggleFilter(this)" data-i18n="segCons">Construcción</button>
+    <button class="filter-btn" data-type="seg" data-value="IndustrialTransformacion" onclick="toggleFilter(this)" data-i18n="segInd">Ind. y Transformación</button>
+  </div>
+  <div class="filter-divider"></div>
+  <span class="filter-label" data-i18n="fDir">Dirección</span>
+  <div class="filter-group">
+    <button class="filter-btn" data-type="dir" data-value="Norte-Bajio" onclick="toggleFilter(this)" data-i18n="dirNB">Norte-Bajío</button>
+    <button class="filter-btn" data-type="dir" data-value="Centro-Sur" onclick="toggleFilter(this)" data-i18n="dirCS">Centro-Sur</button>
+    <button class="filter-btn" data-type="dir" data-value="Pacifico" onclick="toggleFilter(this)" data-i18n="dirPac">Pacífico</button>
+  </div>
+  <div class="filter-divider"></div>
+  <button class="filter-btn clear-btn" onclick="clearFilters()" data-i18n="clearF">✕ Borrar filtros</button>
+</div>
+<div class="active-filters" id="active-filters-bar"></div>
+
+<div class="main">
+
+  <div class="kpi-section">
+    <div class="kpi-title" data-i18n="kpiTitle">Resumen Consolidado — Avance de Noviembre 2026 (corte 25 Nov)</div>
+    <div class="kpi-grid">
+      <div class="kpi-card blue">
+        <div class="kpi-label" data-i18n="kpiCli">Clientes Totales</div>
+        <div class="kpi-value" id="kpi-clientes">—</div>
+        <div class="kpi-sub" id="kpi-sub-clientes">3 segmentos · 3 direcciones · 39 ADCARs</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label" data-i18n="kpiCvp1">CVP al 01 Nov</div>
+        <div class="kpi-value" id="kpi-cvp1">—</div>
+        <div class="kpi-sub" id="kpi-sub-cvp1">Cartera proyectada inicio período</div>
+      </div>
+      <div class="kpi-card blue" style="background:transparent;border-left-color:#398EF4;">
+        <div class="kpi-label" style="color:#1a5c9e;" data-i18n="kpiCvp18">CVP al 18 Nov</div>
+        <div class="kpi-value" id="kpi-cvp18" style="color:#1a5c9e;">—</div>
+        <div class="kpi-sub" data-i18n="kpiCvp18Sub">Cartera proyectada a mitad de período</div>
+      </div>
+      <div class="kpi-card purple">
+        <div class="kpi-label" data-i18n="kpiCvp">CVP al 25 Nov</div>
+        <div class="kpi-value" id="kpi-cvp">—</div>
+        <div class="kpi-sub" data-i18n="kpiCvpSub">Cartera proyectada al corte</div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="kpi-label" data-i18n="kpiPron">Pronóstico</div>
+        <div class="kpi-value" id="kpi-pronostico">—</div>
+        <div class="kpi-sub" data-i18n="kpiPronSub">Meta de recaudo proyectada</div>
+      </div>
+      <div class="kpi-card red" id="kpi-card-cumpl">
+        <div class="kpi-label" data-i18n="kpiCumpl">Cumplimiento Pronóstico</div>
+        <div class="kpi-value" id="kpi-pendiente">—</div>
+        <div class="kpi-sub" data-i18n="kpiCumplSub">Pronóstico ÷ CVP al 25 Nov</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted);">
+      <span class="filter-label" style="margin-right:2px;" data-i18n="cutTimes">Horarios de corte</span>
+      <span class="sum-item" data-i18n="cut1">🕚 11:00 am</span>
+      <span class="sum-item" data-i18n="cut2">🕑 2:00 pm</span>
+      <span class="sum-item" data-i18n="cut3">🕕 6:00 pm</span>
+      <span class="sum-item" data-i18n="cut4">🕙 10:00 pm</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><div class="section-title" data-i18n="secCump">🎯 Porcentaje de cumplimiento</div></div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:#8DB8F2"></span> <span data-i18n="cumpTitle">Porcentaje de cumplimiento</span> <span style="font-size:11px;color:var(--muted);font-weight:400;" data-i18n="cumpNote">· Pronóstico ÷ CVP al 25 Nov · avance al corte del 25 de noviembre de 2026</span></div>
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:#f4f7ff;border:1.5px solid #8DB8F2;border-left:6px solid #3B6FD4;border-radius:10px;padding:14px 20px;margin-bottom:18px;">
+        <div style="min-width:170px;">
+          <div style="font-size:11px;font-weight:800;color:#3B6FD4;text-transform:uppercase;letter-spacing:.6px;" data-i18n="cumpTotal">Cumplimiento Total General</div>
+          <div id="cump-total-pct" style="font-size:44px;font-weight:800;line-height:1.1;">—</div>
+          <div id="cump-total-estado" style="font-size:12px;font-weight:700;"></div>
+        </div>
+        <div style="flex:1;min-width:300px;">
+          <div class="chart-container" id="chart-cumplimiento-total" style="height:90px;"></div>
+        </div>
+      </div>
+      <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;" data-i18n="segProgress">Avance por segmento</div>
+      <div class="chart-container" id="chart-cumplimiento" style="height:200px;"></div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
+        <div style="font-size:11px;font-weight:800;color:#3B6FD4;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;" data-i18n="semTitle">Semáforo % cumplimiento pronóstico</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <span style="width:14px;height:14px;border-radius:50%;background:#F22331;display:inline-block;"></span>
+          <span style="font-size:15px;color:var(--muted);">≤</span>
+          <input type="number" id="sem-red" value="60" min="0" step="1" oninput="onSemChange()" style="width:76px;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);">
+          <span style="width:14px;height:14px;border-radius:50%;background:#FFB000;display:inline-block;margin-left:10px;"></span>
+          <span id="sem-yellow-range" style="font-size:15px;color:var(--muted);min-width:96px;">&gt; 60 y &lt; 90</span>
+          <span style="width:14px;height:14px;border-radius:50%;background:#53CC80;display:inline-block;margin-left:10px;"></span>
+          <span style="font-size:15px;color:var(--muted);">≥</span>
+          <input type="number" id="sem-green" value="90" min="0" step="1" oninput="onSemChange()" style="width:76px;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title" data-i18n="secTrend">📈 Evolución Semanal de Actividades</div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot" style="background:#0000B3"></span> <span data-i18n="trendTitle">Tendencia Semanal de Actividades</span> <span style="font-size:11px;color:var(--muted);font-weight:400;" data-i18n="trendNote">· 4 semanas · 01-25 Nov (semana 4 parcial)</span></div>
+        <div class="chart-container chart-lg" id="chart-tendencia"></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot" style="background:#53CC80"></span> <span data-i18n="sumTitle">Resumen de Actividades del Período</span></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+          <div class="sum-item"><span data-i18n="sumEc">Est. Cuenta/Sem:</span> <strong id="sum-ec">—</strong></div>
+          <div class="sum-item"><span data-i18n="sumPp">Promesa Pago:</span> <strong id="sum-pp">—</strong></div>
+          <div class="sum-item"><span data-i18n="sumCc">Cont. Comercial:</span> <strong id="sum-cc">—</strong></div>
+        </div>
+        <div style="border:1.5px solid #d0d7de;border-radius:8px;padding:12px 14px;background:#f4f5ff;">
+          <div style="font-size:11px;font-weight:800;color:#5a6275;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">
+            <span data-i18n="contactTotal">Contacto Cliente — Total:</span> <strong id="sum-cte" style="color:#0000B3;font-size:13px;">—</strong>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+            <div class="chip wa"><span data-i18n="chWa">WhatsApp:</span> <strong id="chip-wa">—</strong></div>
+            <div class="chip correo"><span data-i18n="chMail">Correo:</span> <strong id="chip-correo">—</strong></div>
+            <div class="chip llamada"><span data-i18n="chCall">Llamada:</span> <strong id="chip-llamada">—</strong></div>
+            <div class="chip teams"><span data-i18n="chTeams">Teams:</span> <strong id="chip-teams">—</strong></div>
+          </div>
+          <div class="chart-container" id="chart-contacto-tipo" style="height:180px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><div class="section-title" data-i18n="secDetail">📋 Detalle por ADCAR</div></div>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="overflow-x:auto;width:100%;">
+        <table class="data-table" id="detail-table">
+          <colgroup>
+            <col class="c-rank"><col class="c-adcar"><col class="c-seg"><col class="c-dir"><col class="c-cli">
+            <col class="c-n"><col class="c-pct"><col class="c-n"><col class="c-pct">
+            <col class="c-n"><col class="c-pct">
+            <col class="c-sub"><col class="c-sub"><col class="c-sub"><col class="c-sub"><col class="c-n"><col class="c-pct">
+            <col class="c-tot"><col class="c-money"><col class="c-money"><col class="c-pctm"><col class="c-pond">
+          </colgroup>
+          <thead>
+            <tr>
+              <th rowspan="2" class="sticky" style="text-align:center;" data-i18n="thRk">Rk</th>
+              <th rowspan="2">ADCAR</th><th rowspan="2" data-i18n="thSeg">Seg.</th><th rowspan="2" data-i18n="thDir">Dir.</th>
+              <th rowspan="2" class="num" data-i18n="thCli">Cli</th>
+              <th colspan="2" class="num" style="text-align:center;background:#e6e6ff;color:#0000B3;border-bottom:1px solid #9999ff;" data-i18n="thEc">Est.Cta/Sem</th>
+              <th colspan="2" class="num" style="text-align:center;background:#e8faf0;color:#1a7a45;border-bottom:1px solid #a3e8c0;" data-i18n="thPp">Prom.Pago</th>
+              <th colspan="2" class="num" style="text-align:center;background:#fff5d6;color:#996600;border-bottom:1px solid #ffd980;" data-i18n="thCc">Ct.Comercial</th>
+              <th colspan="6" class="num" style="text-align:center;background:#f0edff;color:#6a2fcf;border-bottom:1px solid #c9bef5;" data-i18n="thCte">Contacto Cliente</th>
+              <th rowspan="2" class="num" style="background:#e6e6ff;color:#0000B3;font-weight:800;" data-i18n="thTotAct">Total Act.</th>
+              <th rowspan="2" class="num" data-i18n="thCvp">CVP 25Nov</th>
+              <th rowspan="2" class="num" data-i18n="thPron">Pronóst.</th>
+              <th rowspan="2" class="num" style="background:#fde8ea;color:#F22331;" data-i18n="thAv">%Av.Pron</th>
+              <th rowspan="2" class="num" style="background:#e6e6ff;color:#0000B3;font-weight:800;" data-i18n="thPond">Ponderado</th>
+            </tr>
+            <tr>
+              <th class="num" style="background:#e6e6ff;color:#0000B3;" data-i18n="thN">N°</th><th class="num" style="background:#d0d0f5;color:#0000B3;">%</th>
+              <th class="num" style="background:#e8faf0;color:#1a7a45;" data-i18n="thN">N°</th><th class="num" style="background:#d2f3e2;color:#1a7a45;">%</th>
+              <th class="num" style="background:#fff5d6;color:#996600;" data-i18n="thN">N°</th><th class="num" style="background:#ffe9a0;color:#996600;">%</th>
+              <th class="num" style="background:#e8faf0;color:#1a7a45;">WA</th>
+              <th class="num" style="background:#e6e6ff;color:#0000B3;" data-i18n="thMail">Mail</th>
+              <th class="num" style="background:#fff5d6;color:#996600;" data-i18n="thTel">Tel</th>
+              <th class="num" style="background:#f0edff;color:#6a2fcf;">Teams</th>
+              <th class="num" style="background:#e6d8ff;font-weight:800;" data-i18n="thTot">Tot</th>
+              <th class="num" style="background:#ddd0ff;color:#6a2fcf;">%</th>
+            </tr>
+          </thead>
+          <tbody id="detail-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><div class="section-title" data-i18n="secTop">📊 Top 5 Gestión — Total Actividades Registradas</div></div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="dot" style="background:#53CC80"></span> <span data-i18n="topPos">Top 5 Gestión Positiva</span></div>
+        <div class="top-list" id="top5-positiva"></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot" style="background:#F22331"></span> <span data-i18n="topImp">Top 5 Oportunidad de Mejora</span></div>
+        <div class="top-list" id="top5-mejora"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="font-size:12px;color:var(--muted);line-height:1.6;">
+    <div class="card-title" data-i18n="notesTitle">ℹ️ Notas de datos · Avance de Noviembre 2026 (corte 25 Nov)</div>
+    <ul style="padding-left:18px;">
+      <li data-i18n="note1">Seguimiento correspondiente únicamente al mes de noviembre de 2026 (01–25 Nov); la semana 4 (22–25 Nov) es parcial.</li>
+      <li data-i18n="note3">Ranking de ADCAR = ponderado: 20% Est.Cta/Sem + 20% Prom.Pago + 20% Ct.Comercial + 20% Contacto Cliente (cada uno en relación con la cantidad de clientes, con tope de 100%) + 20% %Av.Pron (Pronóstico).</li>
+      <li data-i18n="note2">Cumplimiento = Pronóstico ÷ CVP al 25 Nov (el Excel de noviembre no incluye una columna «CV Noviembre»).</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+// ===================== DATA =====================
+const RAW_DATA = [
+  // ── CONSTRUCCIÓN (18 ADCARs) ──
+  {adcar:"Alejandra Arias Matiz", seg:"Construccion", dir:"Centro-Sur", cli:36, ec:41, pp:60, cc:62, wa:79, correo:67, llamada:0, teams:0, cvp1:null, cvp18:20104513.86, cvp:17719813.53, pron:7516171.65, tot:371, s1:206, s2:148, s3:15, s4:2},
+  {adcar:"Angela Yazmin Melo Zipacon", seg:"Construccion", dir:"Centro-Sur", cli:60, ec:167, pp:44, cc:26, wa:69, correo:58, llamada:10, teams:0, cvp1:null, cvp18:13472565.64, cvp:6549029.83, pron:2100031.36, tot:549, s1:177, s2:132, s3:149, s4:91},
+  {adcar:"David Reyes Molina", seg:"Construccion", dir:"Centro-Sur", cli:38, ec:5, pp:0, cc:0, wa:0, correo:0, llamada:0, teams:0, cvp1:23379927.49, cvp18:16209707.62, cvp:12695198.58, pron:1237645.43, tot:64, s1:3, s2:17, s3:24, s4:20},
+  {adcar:"Francisco Javier Rojas Rojas", seg:"Construccion", dir:"Centro-Sur", cli:31, ec:82, pp:26, cc:33, wa:65, correo:4, llamada:0, teams:0, cvp1:null, cvp18:12420521.64, cvp:10104321.31, pron:2319315.20, tot:295, s1:132, s2:74, s3:57, s4:32},
+  {adcar:"Yessica del Carmen Perez Martinez", seg:"Construccion", dir:"Centro-Sur", cli:24, ec:40, pp:11, cc:100, wa:17, correo:109, llamada:5, teams:3, cvp1:null, cvp18:7380596.70, cvp:3622996.54, pron:1512796.20, tot:262, s1:202, s2:5, s3:29, s4:26},
+  {adcar:"Brigitte Tatiana Rodriguez Gaona", seg:"Construccion", dir:"Norte-Bajio", cli:39, ec:123, pp:13, cc:40, wa:49, correo:46, llamada:0, teams:2, cvp1:null, cvp18:5640106.23, cvp:3711146.24, pron:700359.31, tot:379, s1:94, s2:137, s3:101, s4:47},
+  {adcar:"Cindy Yohana Muñoz Mora", seg:"Construccion", dir:"Norte-Bajio", cli:54, ec:130, pp:45, cc:61, wa:68, correo:22, llamada:29, teams:3, cvp1:null, cvp18:14642247.12, cvp:10473284.37, pron:5147772.19, tot:490, s1:200, s2:155, s3:97, s4:38},
+  {adcar:"Daniel Sebastian Reina Garzón", seg:"Construccion", dir:"Norte-Bajio", cli:37, ec:127, pp:33, cc:35, wa:58, correo:32, llamada:0, teams:6, cvp1:null, cvp18:9178874.45, cvp:5699465.30, pron:2346339.78, tot:443, s1:131, s2:154, s3:113, s4:45},
+  {adcar:"Joshua Asmed Manrique Cortés", seg:"Construccion", dir:"Norte-Bajio", cli:36, ec:53, pp:28, cc:25, wa:58, correo:8, llamada:0, teams:1, cvp1:null, cvp18:9023190.35, cvp:8467317.42, pron:2377218.84, tot:272, s1:70, s2:103, s3:68, s4:31},
+  {adcar:"Karen Tatiana Izquierdo Delgado", seg:"Construccion", dir:"Norte-Bajio", cli:27, ec:89, pp:28, cc:19, wa:58, correo:19, llamada:0, teams:0, cvp1:null, cvp18:11771080.87, cvp:7003630.39, pron:4494555.39, tot:283, s1:89, s2:98, s3:62, s4:34},
+  {adcar:"Miguel Santiago Tapia Julio", seg:"Construccion", dir:"Norte-Bajio", cli:24, ec:66, pp:32, cc:57, wa:82, correo:39, llamada:64, teams:0, cvp1:null, cvp18:14298470.79, cvp:12790555.55, pron:0, tot:469, s1:196, s2:101, s3:114, s4:58},
+  {adcar:"Adolfo Mendez Meza", seg:"Construccion", dir:"Pacifico", cli:53, ec:128, pp:23, cc:41, wa:54, correo:25, llamada:0, teams:3, cvp1:null, cvp18:21334331.77, cvp:10818468.26, pron:3279682.62, tot:425, s1:99, s2:157, s3:111, s4:58},
+  {adcar:"Andrea Stefania Ospina Soto", seg:"Construccion", dir:"Pacifico", cli:33, ec:105, pp:65, cc:23, wa:86, correo:43, llamada:2, teams:0, cvp1:null, cvp18:20640646.61, cvp:14913035.85, pron:1366976.15, tot:523, s1:171, s2:145, s3:164, s4:43},
+  {adcar:"Daniel Steven Perez Quinche", seg:"Construccion", dir:"Pacifico", cli:31, ec:72, pp:35, cc:63, wa:67, correo:14, llamada:19, teams:7, cvp1:null, cvp18:6035316.31, cvp:4201962.09, pron:1285258.58, tot:377, s1:69, s2:141, s3:104, s4:63},
+  {adcar:"Haimer Alexander Herrera Holguin", seg:"Construccion", dir:"Pacifico", cli:29, ec:96, pp:45, cc:82, wa:95, correo:47, llamada:21, teams:39, cvp1:null, cvp18:16579884.56, cvp:13704479.47, pron:5783052.88, tot:566, s1:31, s2:314, s3:179, s4:42},
+  {adcar:"Karen Tatiana Aldana Veloza", seg:"Construccion", dir:"Pacifico", cli:39, ec:94, pp:32, cc:24, wa:47, correo:18, llamada:0, teams:2, cvp1:null, cvp18:14364232.08, cvp:11017638.78, pron:1294023.17, tot:271, s1:62, s2:56, s3:98, s4:55},
+  {adcar:"Valentina Olarte Moreno", seg:"Construccion", dir:"Pacifico", cli:40, ec:99, pp:35, cc:45, wa:43, correo:75, llamada:12, teams:1, cvp1:null, cvp18:12548195.51, cvp:8691193.48, pron:2784685.42, tot:459, s1:94, s2:143, s3:131, s4:91},
+  {adcar:"Yeimy Carolina Garzon Vargas", seg:"Construccion", dir:"Pacifico", cli:56, ec:109, pp:40, cc:18, wa:17, correo:13, llamada:45, teams:0, cvp1:null, cvp18:9257996.82, cvp:6244973.15, pron:1683177.95, tot:450, s1:56, s2:108, s3:213, s4:73},
+  // ── DISTRIBUCIÓN (16 ADCARs) ──
+  {adcar:"Heidy Melo", seg:"Distribucion", dir:"Centro-Sur", cli:83, ec:4, pp:91, cc:13, wa:19, correo:0, llamada:0, teams:0, cvp1:67747061.72, cvp18:52089772.15, cvp:27055407.24, pron:0, tot:256, s1:10, s2:172, s3:60, s4:14},
+  {adcar:"Maria Camila Garzon Florez", seg:"Distribucion", dir:"Centro-Sur", cli:71, ec:2, pp:1, cc:5, wa:3, correo:7, llamada:1, teams:1, cvp1:65989372.40, cvp18:62690169.64, cvp:21689263.39, pron:166350.96, tot:90, s1:66, s2:0, s3:0, s4:24},
+  {adcar:"Luis Gregorio Guasca", seg:"Distribucion", dir:"Centro-Sur", cli:78, ec:10, pp:32, cc:21, wa:33, correo:18, llamada:0, teams:2, cvp1:58081015.08, cvp18:68650128.91, cvp:16277205.56, pron:0, tot:231, s1:22, s2:91, s3:78, s4:40},
+  {adcar:"Geraldine Triana Morera", seg:"Distribucion", dir:"Centro-Sur", cli:126, ec:1, pp:22, cc:17, wa:38, correo:9, llamada:12, teams:2, cvp1:74151404.71, cvp18:51759341.30, cvp:18432109.06, pron:0, tot:310, s1:61, s2:110, s3:73, s4:66},
+  {adcar:"Lorena Gallo", seg:"Distribucion", dir:"Norte-Bajio", cli:79, ec:42, pp:60, cc:134, wa:126, correo:35, llamada:1, teams:29, cvp1:59401462.34, cvp18:61949827.65, cvp:15960811.35, pron:0, tot:776, s1:161, s2:266, s3:225, s4:124},
+  {adcar:"Viviana Chocue Romero", seg:"Distribucion", dir:"Norte-Bajio", cli:42, ec:0, pp:1, cc:17, wa:205, correo:58, llamada:5, teams:64, cvp1:21919689.55, cvp18:14807673.72, cvp:21522368.27, pron:0, tot:831, s1:152, s2:267, s3:315, s4:97},
+  {adcar:"Yenifer Yulied Zamora Ortegon", seg:"Distribucion", dir:"Norte-Bajio", cli:68, ec:2, pp:15, cc:185, wa:87, correo:82, llamada:8, teams:54, cvp1:49924615.52, cvp18:34232355.82, cvp:15541549.73, pron:1000000.00, tot:603, s1:122, s2:184, s3:164, s4:133},
+  {adcar:"Cristian Felipe Sierra Pena", seg:"Distribucion", dir:"Norte-Bajio", cli:59, ec:1, pp:4, cc:44, wa:35, correo:8, llamada:2, teams:14, cvp1:56177321.23, cvp18:36346835.22, cvp:8320181.27, pron:0, tot:243, s1:54, s2:66, s3:80, s4:43},
+  {adcar:"Andrea Saenz", seg:"Distribucion", dir:"Norte-Bajio", cli:54, ec:4, pp:14, cc:73, wa:22, correo:53, llamada:2, teams:11, cvp1:34099335.55, cvp18:26325072.20, cvp:26892821.22, pron:381865.30, tot:281, s1:104, s2:71, s3:65, s4:41},
+  {adcar:"Maria Del Pilar Cardenas", seg:"Distribucion", dir:"Pacifico", cli:25, ec:0, pp:1, cc:18, wa:1, correo:0, llamada:0, teams:0, cvp1:17293004.96, cvp18:23088068.41, cvp:33975693.49, pron:0, tot:108, s1:13, s2:59, s3:35, s4:1},
+  {adcar:"Yeimy Patricia Villamil Sanchez", seg:"Distribucion", dir:"Pacifico", cli:55, ec:6, pp:42, cc:122, wa:33, correo:72, llamada:20, teams:12, cvp1:31885651.33, cvp18:16898072.18, cvp:27982387.07, pron:3755698.22, tot:505, s1:167, s2:159, s3:107, s4:72},
+  {adcar:"Lineth Alba", seg:"Distribucion", dir:"Pacifico", cli:47, ec:2, pp:37, cc:63, wa:78, correo:20, llamada:2, teams:26, cvp1:43900371.58, cvp18:33542415.60, cvp:15423708.78, pron:2200000, tot:398, s1:66, s2:154, s3:109, s4:69},
+  {adcar:"Cristian Felipe Sierra Pena", seg:"Distribucion", dir:"Pacifico", cli:80, ec:1, pp:4, cc:44, wa:35, correo:8, llamada:2, teams:14, cvp1:78468394.79, cvp18:72795823.73, cvp:4674595.19, pron:0, tot:243, s1:54, s2:66, s3:80, s4:43},
+  {adcar:"David Buitrago", seg:"Distribucion", dir:"Pacifico", cli:27, ec:1, pp:1, cc:4, wa:8, correo:1, llamada:0, teams:0, cvp1:18029669.50, cvp18:10195174.29, cvp:7996088.57, pron:0, tot:94, s1:18, s2:28, s3:44, s4:4},
+  {adcar:"Ronald Ospina", seg:"Distribucion", dir:"Pacifico", cli:57, ec:15, pp:21, cc:14, wa:15, correo:3, llamada:21, teams:15, cvp1:32780903.24, cvp18:20876896.93, cvp:5146310.79, pron:0, tot:256, s1:80, s2:87, s3:71, s4:18},
+  {adcar:"Stefany Garcia Rocha", seg:"Distribucion", dir:"Pacifico", cli:121, ec:16, pp:12, cc:45, wa:19, correo:6, llamada:2, teams:15, cvp1:76356388.27, cvp18:87379048, cvp:7142857.58, pron:0, tot:214, s1:41, s2:64, s3:31, s4:78},
+  // ── INDUSTRIAL Y TRANSFORMACIÓN (6 ADCARs) ──
+  {adcar:"Paola Orjuela", seg:"IndustrialTransformacion", dir:"Centro-Sur", cli:41, ec:27, pp:15, cc:4, wa:21, correo:2, llamada:9, teams:0, cvp1:60289704.60, cvp18:45739377.86, cvp:12650100.55, pron:2325152.05, tot:246, s1:39, s2:36, s3:120, s4:51},
+  {adcar:"Jose Sepulveda", seg:"IndustrialTransformacion", dir:"Centro-Sur", cli:72, ec:6, pp:58, cc:29, wa:27, correo:46, llamada:2, teams:19, cvp1:53353595.16, cvp18:24204735.13, cvp:23174841.68, pron:2382416.54, tot:416, s1:48, s2:268, s3:55, s4:45},
+  {adcar:"Daniel Taborda", seg:"IndustrialTransformacion", dir:"Norte-Bajio", cli:47, ec:0, pp:2, cc:70, wa:3, correo:50, llamada:0, teams:22, cvp1:55749260.78, cvp18:54555681.43, cvp:22553981.50, pron:2950000, tot:181, s1:43, s2:85, s3:34, s4:19},
+  {adcar:"Jean Carlos Onate", seg:"IndustrialTransformacion", dir:"Norte-Bajio", cli:48, ec:4, pp:7, cc:97, wa:32, correo:57, llamada:5, teams:4, cvp1:46372871.55, cvp18:43243674.94, cvp:9665733.41, pron:1621911.09, tot:307, s1:73, s2:93, s3:111, s4:30},
+  {adcar:"Omar Fabio Sanchez Cabezas", seg:"IndustrialTransformacion", dir:"Pacifico", cli:39, ec:1, pp:10, cc:74, wa:14, correo:51, llamada:16, teams:20, cvp1:48836795.35, cvp18:34425550.32, cvp:10970941.68, pron:4051911.09, tot:507, s1:140, s2:150, s3:148, s4:69},
+  {adcar:"Marlon Jayr Serrano Montanez", seg:"IndustrialTransformacion", dir:"Pacifico", cli:42, ec:1, pp:0, cc:160, wa:108, correo:15, llamada:0, teams:51, cvp1:36562817.92, cvp18:32096772.92, cvp:12690405.48, pron:1000000.06, tot:659, s1:183, s2:235, s3:152, s4:89}
+];
+// 18 Construcción + 16 filas de Distribución + 6 Industrial y Transformación = 40 filas · 39 ADCARs únicos · 2,048 clientes
+// Cristian Felipe Sierra Pena atiende clientes en Norte-Bajío y Pacífico: tiene una fila por dirección (las actividades se registran por ADCAR y son las mismas en ambas filas)
+// Fuente: "Avance corte al 25 Noviembre.xlsx" (hoja BASE) · seguimiento exclusivo de Noviembre 2026
+// cvp1 = Proyectada 01 Nov (null en Construcción: la columna M del Excel tiene #REF!) · cvp18 = Proyectada 18 Nov · cvp = Proyectada 25 Nov
+// tot = Total Actividades (columna Q) · s1..s4 = Semanas 1 a 4 (columnas R a U)
+
+function normN(s){return s.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');}
+// Total Actividades por ADCAR (columna Q del Excel · Noviembre 2026)
+const TOTAL_ACT=Object.fromEntries(RAW_DATA.map(r=>[normN(r.adcar),r.tot]));
+function getTotalAct(adcar){return TOTAL_ACT[normN(adcar)]??0;}
+// Incapacidad: se antepone 🏥 al nombre del ADCAR (en Noviembre no hay ADCARs en incapacidad)
+const INCAPACIDAD=new Set([]);
+function adcarLabel(adcar){return INCAPACIDAD.has(normN(adcar))?'🏥 '+adcar:adcar;}
+
+// ===================== IDIOMA / LANGUAGE (ES · EN) =====================
+const I18N={
+  es:{
+    title:'Informe Gerencial — Seguimiento Tres Segmentos · Avance Noviembre 2026 (corte 25 Nov)',
+    hdrTitle:'📊 Informe Gerencial de Seguimiento',
+    hdrSub:'Tres Segmentos · Cartera Vencida & Actividades · Avance de Noviembre 2026 (01–25 Nov)',
+    badge:'Corte 25 Nov 2026',
+    fSeg:'Segmento',fDir:'Dirección',clearF:'✕ Borrar filtros',
+    segDist:'Distribución',segCons:'Construcción',segInd:'Ind. y Transformación',segIndShort:'Ind.Transf.',
+    dirNB:'Norte-Bajío',dirCS:'Centro-Sur',dirPac:'Pacífico',
+    activeFilters:'Filtros activos',noData:'Sin datos',na:'N/D',
+    kpiTitle:'Resumen Consolidado — Avance de Noviembre 2026 (corte 25 Nov)',
+    kpiCli:'Clientes Totales',segUnit:'segmento(s)',dirUnit:'dirección(es)',
+    kpiCvp1:'CVP al 01 Nov',kpiCvp1Sub:'Cartera proyectada inicio período',
+    kpiCvp1SubPartial:'Sin Construcción (dato no disponible)',kpiCvp1SubNA:'Dato no disponible en el Excel',
+    kpiCvp18:'CVP al 18 Nov',kpiCvp18Sub:'Cartera proyectada a mitad de período',
+    kpiCvp:'CVP al 25 Nov',kpiCvpSub:'Cartera proyectada al corte',
+    kpiPron:'Pronóstico',kpiPronSub:'Meta de recaudo proyectada',
+    kpiCumpl:'Cumplimiento Pronóstico',kpiCumplSub:'Pronóstico ÷ CVP al 25 Nov',
+    cutTimes:'Horarios de corte',cut1:'🕚 11:00 am',cut2:'🕑 2:00 pm',cut3:'🕕 6:00 pm',cut4:'🕙 10:00 pm',
+    secCump:'🎯 Porcentaje de cumplimiento',cumpTitle:'Porcentaje de cumplimiento',
+    cumpNote:'· Pronóstico ÷ CVP al 25 Nov · avance al corte del 25 de noviembre de 2026',
+    cumpTotal:'Cumplimiento Total General',stOk:'En cumplimiento',stRisk:'En riesgo',stBad:'Incumplimiento',
+    segProgress:'Avance por segmento',semTitle:'Semáforo % cumplimiento pronóstico',
+    grandTotal:'Total General',tipForecast:'Pronóstico (Meta)',tipPortfolio:'CVP al 25 Nov',tipCompliance:'Porcentaje de cumplimiento',
+    secTrend:'📈 Evolución Semanal de Actividades',trendTitle:'Tendencia Semanal de Actividades',
+    trendNote:'· 4 semanas · 01-25 Nov (semana 4 parcial)',
+    wk1:'Semana 1\n(01-07 Nov)',wk2:'Semana 2\n(08-14 Nov)',wk3:'Semana 3\n(15-21 Nov)',wk4:'Semana 4\n(22-25 Nov)',
+    sumTitle:'Resumen de Actividades del Período',sumEc:'Est. Cuenta/Sem:',sumPp:'Promesa Pago:',sumCc:'Cont. Comercial:',
+    contactTotal:'Contacto Cliente — Total:',
+    chWa:'WhatsApp:',chMail:'Correo:',chCall:'Llamada:',chTeams:'Teams:',
+    mail:'Correo',call:'Llamada',
+    secDetail:'📋 Detalle por ADCAR',
+    thRk:'Rk',thSeg:'Seg.',thDir:'Dir.',thCli:'Cli',thEc:'Est.Cta/Sem',thPp:'Prom.Pago',thCc:'Ct.Comercial',thCte:'Contacto Cliente',
+    thTotAct:'Total Act.',thCvp:'CVP 25Nov',thPron:'Pronóst.',thAv:'%Av.Pron',thPond:'Ponderado',thN:'N°',thMail:'Mail',thTel:'Tel',thTot:'Tot',
+    secTop:'📊 Top 5 Gestión — Total Actividades Registradas',topPos:'Top 5 Gestión Positiva',topImp:'Top 5 Oportunidad de Mejora',
+    notesTitle:'ℹ️ Notas de datos · Avance de Noviembre 2026 (corte 25 Nov)',
+    note1:'Seguimiento correspondiente únicamente al mes de noviembre de 2026 (01–25 Nov); la semana 4 (22–25 Nov) es parcial.',
+    note3:'Ranking de ADCAR = ponderado: 20% Est.Cta/Sem + 20% Prom.Pago + 20% Ct.Comercial + 20% Contacto Cliente (cada uno en relación con la cantidad de clientes, con tope de 100%) + 20% %Av.Pron (Pronóstico).',
+    note2:'Cumplimiento = Pronóstico ÷ CVP al 25 Nov (el Excel de noviembre no incluye una columna «CV Noviembre»).'
+  },
+  en:{
+    title:'Management Report — Three-Segment Follow-up · November 2026 Progress (cut-off Nov 25)',
+    hdrTitle:'📊 Management Follow-up Report',
+    hdrSub:'Three Segments · Overdue Portfolio & Activities · November 2026 Progress (Nov 1–25)',
+    badge:'Cut-off Nov 25, 2026',
+    fSeg:'Segment',fDir:'Region',clearF:'✕ Clear filters',
+    segDist:'Distribution',segCons:'Construction',segInd:'Industrial & Transformation',segIndShort:'Ind. & Transf.',
+    dirNB:'North-Bajío',dirCS:'Center-South',dirPac:'Pacific',
+    activeFilters:'Active filters',noData:'No data',na:'N/A',
+    kpiTitle:'Consolidated Summary — November 2026 Progress (cut-off Nov 25)',
+    kpiCli:'Total Customers',segUnit:'segment(s)',dirUnit:'region(s)',
+    kpiCvp1:'CVP as of Nov 01',kpiCvp1Sub:'Projected portfolio at period start',
+    kpiCvp1SubPartial:'Excludes Construction (data not available)',kpiCvp1SubNA:'Data not available in the Excel file',
+    kpiCvp18:'CVP as of Nov 18',kpiCvp18Sub:'Projected portfolio at mid-period',
+    kpiCvp:'CVP as of Nov 25',kpiCvpSub:'Projected portfolio at cut-off',
+    kpiPron:'Forecast',kpiPronSub:'Projected collection target',
+    kpiCumpl:'Forecast Compliance',kpiCumplSub:'Forecast ÷ CVP as of Nov 25',
+    cutTimes:'Cut-off times',cut1:'🕚 11:00 AM',cut2:'🕑 2:00 PM',cut3:'🕕 6:00 PM',cut4:'🕙 10:00 PM',
+    secCump:'🎯 Compliance percentage',cumpTitle:'Compliance percentage',
+    cumpNote:'· Forecast ÷ CVP as of Nov 25 · progress as of the Nov 25, 2026 cut-off',
+    cumpTotal:'Overall Total Compliance',stOk:'On target',stRisk:'At risk',stBad:'Non-compliance',
+    segProgress:'Progress by segment',semTitle:'Forecast compliance % traffic light',
+    grandTotal:'Grand Total',tipForecast:'Forecast (Target)',tipPortfolio:'CVP as of Nov 25',tipCompliance:'Compliance percentage',
+    secTrend:'📈 Weekly Activity Trend',trendTitle:'Weekly Activity Trend',
+    trendNote:'· 4 weeks · Nov 1–25 (week 4 partial)',
+    wk1:'Week 1\n(Nov 1–7)',wk2:'Week 2\n(Nov 8–14)',wk3:'Week 3\n(Nov 15–21)',wk4:'Week 4\n(Nov 22–25)',
+    sumTitle:'Period Activity Summary',sumEc:'Account Stmt./Wk:',sumPp:'Payment Promise:',sumCc:'Commercial Contact:',
+    contactTotal:'Customer Contact — Total:',
+    chWa:'WhatsApp:',chMail:'Email:',chCall:'Call:',chTeams:'Teams:',
+    mail:'Email',call:'Call',
+    secDetail:'📋 ADCAR Detail',
+    thRk:'Rk',thSeg:'Seg.',thDir:'Reg.',thCli:'Cust.',thEc:'Acct.Stmt/Wk',thPp:'Pay.Promise',thCc:'Comm.Contact',thCte:'Customer Contact',
+    thTotAct:'Total Act.',thCvp:'CVP Nov 25',thPron:'Forecast',thAv:'%Fcst.Prog.',thPond:'Weighted',thN:'No.',thMail:'Mail',thTel:'Call',thTot:'Tot',
+    secTop:'📊 Top 5 Performance — Total Activities Logged',topPos:'Top 5 Best Performers',topImp:'Top 5 Improvement Opportunities',
+    notesTitle:'ℹ️ Data notes · November 2026 Progress (cut-off Nov 25)',
+    note1:'Follow-up covering the month of November 2026 only (Nov 1–25); week 4 (Nov 22–25) is partial.',
+    note3:'ADCAR ranking = weighted score: 20% Acct.Stmt/Wk + 20% Pay.Promise + 20% Comm.Contact + 20% Customer Contact (each relative to number of customers, capped at 100%) + 20% %Fcst.Prog. (Forecast).',
+    note2:'Compliance = Forecast ÷ CVP as of Nov 25 (the November Excel file has no “November overdue portfolio” column).'
+  }
+};
+let LANG='es';
+function t(k){return (I18N[LANG]&&I18N[LANG][k])??I18N.es[k]??k;}
+function loc(){return LANG==='en'?'en-US':'es-CO';}
+function segName(s){return t(s==='Construccion'?'segCons':s==='Distribucion'?'segDist':'segInd');}
+function dirName(d){return t(d==='Norte-Bajio'?'dirNB':d==='Centro-Sur'?'dirCS':'dirPac');}
+
+function applyLang(){
+  document.documentElement.lang=LANG;
+  document.title=t('title');
+  document.querySelectorAll('[data-i18n]').forEach(e=>{e.textContent=t(e.dataset.i18n);});
+  document.getElementById('lang-es').classList.toggle('active',LANG==='es');
+  document.getElementById('lang-en').classList.toggle('active',LANG==='en');
+  updateSemRange();
+  applyFilters();
+}
+function setLang(l){LANG=l;applyLang();}
+
+// ===================== STATE =====================
+let activeFilters={seg:[],dir:[]};
+
+// ===================== UTILS =====================
+function fmtC(v){if(v>=1e9)return'$'+(v/1e9).toFixed(1)+'B';if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(v===0)return'$0';return'$'+v.toLocaleString(loc(),{maximumFractionDigits:0});}
+function fmtN(v){return v.toLocaleString(loc());}
+
+function getFiltered(){
+  return RAW_DATA.filter(r=>{
+    const sOk=activeFilters.seg.length===0||activeFilters.seg.includes(r.seg);
+    const dOk=activeFilters.dir.length===0||activeFilters.dir.includes(r.dir);
+    return sOk&&dOk;
+  });
+}
+
+// ===================== CHARTS =====================
+let charts={};
+function initCharts(){
+  charts['t']=echarts.init(document.getElementById('chart-tendencia'));
+  charts['c']=echarts.init(document.getElementById('chart-contacto-tipo'));
+  charts['k']=echarts.init(document.getElementById('chart-cumplimiento'));
+  charts['kt']=echarts.init(document.getElementById('chart-cumplimiento-total'));
+}
+
+// Semáforo editable: ≤ umbral rojo → rojo · > umbral rojo y < umbral verde → amarillo · ≥ umbral verde → verde
+const SEM={red:60,green:90};
+function updateSemRange(){
+  document.getElementById('sem-yellow-range').textContent='> '+SEM.red+(LANG==='en'?' and':' y')+' < '+SEM.green;
+}
+function onSemChange(){
+  const r=parseFloat(document.getElementById('sem-red').value);
+  const g=parseFloat(document.getElementById('sem-green').value);
+  if(!isNaN(r))SEM.red=r;
+  if(!isNaN(g))SEM.green=g;
+  updateSemRange();
+  renderCumplimiento(getFiltered());
+}
+function semCump(p){return p>=SEM.green?'#53CC80':p<=SEM.red?'#F22331':'#FFB000';}
+// Tonos suaves para el relleno de las barras (el texto conserva el color fuerte del semáforo)
+function semCumpSoft(p){return p>=SEM.green?'#9BE0B6':p<=SEM.red?'#F22331':'#FFD27A';}
+
+function renderCumplimiento(data){
+  // Meta = Pronóstico (100%). Porcentaje de cumplimiento = Pronóstico ÷ Cartera (Proyectada 25 Nov · Noviembre 2026)
+  // (si la cartera supera al Pronóstico, el porcentaje baja: no se está cumpliendo)
+  // Total General en un panel propio (barra grande, cifra destacada) y, aparte, el avance de cada segmento
+  const groups=[
+    {name:t('segCons'),rows:data.filter(r=>r.seg==='Construccion')},
+    {name:t('segDist'),rows:data.filter(r=>r.seg==='Distribucion')},
+    {name:t('segInd'),rows:data.filter(r=>r.seg==='IndustrialTransformacion')}
+  ].filter(g=>g.rows.length>0);
+  const sum=(rows,k)=>rows.reduce((s,r)=>s+r[k],0);
+  const stats=groups.map(g=>{
+    const pron=sum(g.rows,'pron'),cart=sum(g.rows,'cvp');
+    return{name:g.name,pron,cart,pct:cart>0?(pron/cart)*100:0};
+  });
+  const tPron=sum(data,'pron'),tCart=sum(data,'cvp');
+  const total={name:t('grandTotal'),pron:tPron,cart:tCart,pct:tCart>0?(tPron/tCart)*100:0};
+  // Misma escala en ambas gráficas para que las barras sean comparables
+  const xMax=Math.max(100,Math.ceil(Math.max(total.pct,...stats.map(s=>s.pct))/10)*10);
+  const tColor=semCump(total.pct);
+  const pctEl=document.getElementById('cump-total-pct');
+  pctEl.textContent=total.pct.toFixed(1)+'%';
+  pctEl.style.color=tColor;
+  const estEl=document.getElementById('cump-total-estado');
+  estEl.textContent=total.pct>=SEM.green?t('stOk'):total.pct>SEM.red?t('stRisk'):t('stBad');
+  estEl.style.color=tColor;
+  const tip=s=>`<b>${s.name}</b><br>${t('tipForecast')}: <b>${fmtC(s.pron)}</b><br>${t('tipPortfolio')}: <b>${fmtC(s.cart)}</b><br>${t('tipCompliance')}: <b>${s.pct.toFixed(1)}%</b>`;
+  charts['kt'].setOption({
+    animationDuration:1400,animationEasing:'cubicOut',
+    tooltip:{trigger:'item',formatter:()=>tip(total)},
+    grid:{left:'2%',right:'8%',bottom:'14%',top:'6%',containLabel:true},
+    xAxis:{type:'value',min:0,max:xMax,axisLabel:{fontSize:11,formatter:'{value}%'},splitLine:{lineStyle:{color:'#eef0f3'}}},
+    yAxis:{type:'category',data:[total.name],axisTick:{show:false},axisLine:{show:false},axisLabel:{show:false}},
+    series:[{type:'bar',barWidth:40,showBackground:true,backgroundStyle:{color:'#e3ebfa',borderRadius:6},
+      data:[{value:+total.pct.toFixed(1),itemStyle:{color:semCumpSoft(total.pct),borderRadius:6}}],
+      label:{show:true,position:'right',fontSize:15,fontWeight:'800',color:tColor,formatter:p=>p.value.toFixed(1)+'%'}}]
+  },true);
+  // El eje de categorías de ECharts dibuja de abajo hacia arriba: se invierte para que el primer segmento quede arriba
+  const rev=[...stats].reverse();
+  const names=rev.map(s=>s.name);
+  charts['k'].setOption({
+    tooltip:{
+      trigger:'axis',axisPointer:{type:'shadow'},
+      formatter:params=>tip(rev[params[0].dataIndex])
+    },
+    grid:{left:'3%',right:'8%',bottom:'4%',top:'4%',containLabel:true},
+    xAxis:{type:'value',min:0,max:xMax,axisLabel:{fontSize:11,formatter:'{value}%'},splitLine:{lineStyle:{color:'#eef0f3'}}},
+    yAxis:{type:'category',data:names,axisTick:{show:false},axisLabel:{fontSize:12,fontWeight:'bold'}},
+    series:[
+      {name:t('tipCompliance'),type:'bar',barMaxWidth:40,
+        data:rev.map(s=>({value:+s.pct.toFixed(1),itemStyle:{color:semCumpSoft(s.pct)}})),
+        label:{show:true,position:'right',fontSize:11,fontWeight:'bold',color:p=>semCump(p.value),formatter:p=>p.value.toFixed(1)+'%'}}
+    ]
+  },true);
+}
+
+function renderTendencia(data){
+  // Líneas de tendencia reales: 4 semanas (columnas R, S, T y U del Excel) · la semana 4 es parcial (corte 25 Nov)
+  const lbl=[t('wk1'),t('wk2'),t('wk3'),t('wk4')];
+
+  // Acumular totales por segmento
+  let conS1=0,conS2=0,conS3=0,conS4=0,disS1=0,disS2=0,disS3=0,disS4=0,indS1=0,indS2=0,indS3=0,indS4=0;
+  data.forEach(r=>{
+    const s1=r.s1||0, s2=r.s2||0, s3=r.s3||0, s4=r.s4||0;
+    if(r.seg==='Construccion'){conS1+=s1;conS2+=s2;conS3+=s3;conS4+=s4;}
+    else if(r.seg==='Distribucion'){disS1+=s1;disS2+=s2;disS3+=s3;disS4+=s4;}
+    else if(r.seg==='IndustrialTransformacion'){indS1+=s1;indS2+=s2;indS3+=s3;indS4+=s4;}
+  });
+  // Total General fijo: siempre sobre RAW_DATA completo, independiente de los filtros
+  const totalS1=RAW_DATA.reduce((s,r)=>s+(r.s1||0),0);
+  const totalS2=RAW_DATA.reduce((s,r)=>s+(r.s2||0),0);
+  const totalS3=RAW_DATA.reduce((s,r)=>s+(r.s3||0),0);
+  const totalS4=RAW_DATA.reduce((s,r)=>s+(r.s4||0),0);
+  const nCons=t('segCons'),nDist=t('segDist'),nInd=t('segInd'),nTot=t('grandTotal');
+
+  charts['t'].setOption({
+    tooltip:{
+      trigger:'axis',
+      axisPointer:{type:'shadow'},
+      formatter:params=>{
+        let txt=`<b>${params[0].axisValue.replace('\n',' ')}</b><br>`;
+        params.forEach(p=>{txt+=p.marker+p.seriesName+': <b>'+p.value.toLocaleString(loc())+'</b><br>';});
+        return txt;
+      }
+    },
+    legend:{data:[nCons,nDist,nInd,nTot],bottom:0,textStyle:{fontSize:11}},
+    grid:{left:'3%',right:'4%',bottom:'18%',top:'8%',containLabel:true},
+    xAxis:{type:'category',data:lbl,axisLabel:{fontSize:12,fontWeight:'bold',lineHeight:16}},
+    yAxis:{type:'value',axisLabel:{fontSize:11},splitLine:{lineStyle:{color:'#eef0f3'}}},
+    series:[
+      {name:nCons,type:'bar',barMaxWidth:36,data:[conS1,conS2,conS3,conS4],
+        itemStyle:{color:'#0000B3'},
+        label:{show:true,position:'top',fontSize:11,color:'#0000B3',fontWeight:'bold',formatter:p=>p.value.toLocaleString(loc())}},
+      {name:nDist,type:'bar',barMaxWidth:36,data:[disS1,disS2,disS3,disS4],
+        itemStyle:{color:'#53CC80'},
+        label:{show:true,position:'top',fontSize:11,color:'#1a8c48',fontWeight:'bold',formatter:p=>p.value.toLocaleString(loc())}},
+      {name:nInd,type:'bar',barMaxWidth:36,data:[indS1,indS2,indS3,indS4],
+        itemStyle:{color:'#FFB000'},
+        label:{show:true,position:'top',fontSize:11,color:'#a07000',fontWeight:'bold',formatter:p=>p.value.toLocaleString(loc())}},
+      {name:nTot,type:'line',data:[totalS1,totalS2,totalS3,totalS4],
+        silent:true,animation:false,smooth:false,symbol:'diamond',symbolSize:12,
+        emphasis:{disabled:true},
+        lineStyle:{width:3,color:'#F22331',type:'dashed'},itemStyle:{color:'#F22331'},
+        label:{show:true,position:'top',fontSize:13,color:'#F22331',fontWeight:'800',formatter:p=>p.value.toLocaleString(loc())}}
+    ]
+  },true);
+}
+
+function renderContactoTipo(data){
+  const wa=data.reduce((s,r)=>s+r.wa,0);
+  const co=data.reduce((s,r)=>s+r.correo,0);
+  const ll=data.reduce((s,r)=>s+r.llamada,0);
+  const te=data.reduce((s,r)=>s+r.teams,0);
+  charts['c'].setOption({
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+    grid:{left:'10%',right:'6%',top:'8%',bottom:'12%',containLabel:false},
+    xAxis:{type:'category',data:['WhatsApp',t('mail'),t('call'),'Teams'],axisLabel:{fontSize:11},axisTick:{show:false},axisLine:{lineStyle:{color:'#d0d7de'}}},
+    yAxis:{type:'value',axisLabel:{fontSize:10},splitLine:{lineStyle:{color:'#eef0f3'}}},
+    series:[{type:'bar',barMaxWidth:40,
+      data:[{value:wa,itemStyle:{color:'#53CC80'}},{value:co,itemStyle:{color:'#0000B3'}},{value:ll,itemStyle:{color:'#FFB000'}},{value:te,itemStyle:{color:'#9A4CF5'}}],
+      label:{show:true,position:'top',fontSize:11,fontWeight:'bold',color:'#1a1a2e'}
+    }]
+  },true);
+}
+
+// ===================== KPIs =====================
+function updateKPIs(data){
+  const totalCli=data.reduce((s,r)=>s+r.cli,0);
+  // Proyectada 01 Nov no está disponible para Construcción (columna M del Excel con #REF!)
+  const cvp1Rows=data.filter(r=>r.cvp1!==null);
+  const totalCvp1=cvp1Rows.reduce((s,r)=>s+r.cvp1,0);
+  const totalCvp18=data.reduce((s,r)=>s+r.cvp18,0);
+  const totalCvp=data.reduce((s,r)=>s+r.cvp,0);
+  const totalPron=data.reduce((s,r)=>s+r.pron,0);
+  const cumplimiento=totalCvp>0?(totalPron/totalCvp)*100:0;
+  const segs=new Set(data.map(r=>r.seg));
+  const dirs=new Set(data.map(r=>r.dir));
+  document.getElementById('kpi-clientes').textContent=fmtN(totalCli);
+  document.getElementById('kpi-cvp1').textContent=cvp1Rows.length?fmtC(totalCvp1):t('na');
+  document.getElementById('kpi-sub-cvp1').textContent=cvp1Rows.length===data.length?t('kpiCvp1Sub'):(cvp1Rows.length?t('kpiCvp1SubPartial'):t('kpiCvp1SubNA'));
+  document.getElementById('kpi-cvp18').textContent=fmtC(totalCvp18);
+  document.getElementById('kpi-cvp').textContent=fmtC(totalCvp);
+  document.getElementById('kpi-pronostico').textContent=fmtC(totalPron);
+  document.getElementById('kpi-pendiente').textContent=cumplimiento.toFixed(1)+'%';
+  // Verde si se cumplió el pronóstico (Pronóstico ≥ Proyectada 25 Nov); rojo en caso contrario
+  document.getElementById('kpi-card-cumpl').className='kpi-card '+(totalCvp>0&&totalPron>=totalCvp?'green':'red');
+  document.getElementById('kpi-sub-clientes').textContent=`${segs.size} ${t('segUnit')} · ${dirs.size} ${t('dirUnit')} · ${new Set(data.map(r=>normN(r.adcar))).size} ADCARs`;
+}
+
+function updateContactChips(data){
+  const wa=data.reduce((s,r)=>s+r.wa,0);
+  const co=data.reduce((s,r)=>s+r.correo,0);
+  const ll=data.reduce((s,r)=>s+r.llamada,0);
+  const te=data.reduce((s,r)=>s+r.teams,0);
+  const ec=data.reduce((s,r)=>s+r.ec,0);
+  const pp=data.reduce((s,r)=>s+r.pp,0);
+  const cc=data.reduce((s,r)=>s+r.cc,0);
+  document.getElementById('chip-wa').textContent=fmtN(wa);
+  document.getElementById('chip-correo').textContent=fmtN(co);
+  document.getElementById('chip-llamada').textContent=fmtN(ll);
+  document.getElementById('chip-teams').textContent=fmtN(te);
+  document.getElementById('sum-ec').textContent=fmtN(ec);
+  document.getElementById('sum-pp').textContent=fmtN(pp);
+  document.getElementById('sum-cc').textContent=fmtN(cc);
+  document.getElementById('sum-cte').textContent=fmtN(wa+co+ll+te);
+}
+
+// ===================== BADGES =====================
+function segBadge(seg){
+  if(seg==='Construccion') return `<span class="seg-badge cons">${t('segCons')}</span>`;
+  if(seg==='Distribucion') return `<span class="seg-badge dist">${t('segDist')}</span>`;
+  return `<span class="seg-badge indt">${t('segIndShort')}</span>`;
+}
+function dirBadge(dir){
+  if(dir==='Norte-Bajio') return `<span class="dir-badge norte">${t('dirNB')}</span>`;
+  if(dir==='Centro-Sur')  return `<span class="dir-badge centro">${t('dirCS')}</span>`;
+  return `<span class="dir-badge pacifico">${t('dirPac')}</span>`;
+}
+
+// ===================== TOP 5 =====================
+function renderTop5(data){
+  const enriched=data.map(r=>({...r,totalAct:getTotalAct(r.adcar)}));
+  const sorted=[...enriched].sort((a,b)=>b.totalAct-a.totalAct);
+  const maxAct=sorted[0]?.totalAct||1;
+  const positiva=sorted.slice(0,5);
+  const posNames=new Set(positiva.map(r=>r.adcar));
+  const mejora=[...enriched].filter(r=>r.totalAct>0&&!posNames.has(r.adcar)).sort((a,b)=>a.totalAct-b.totalAct).slice(0,5).sort((a,b)=>b.totalAct-a.totalAct);
+  const posClasses=['pos1','pos2','pos3','pos4','pos5'];
+  function buildItem(r,idx,isPos){
+    const pct=Math.round((r.totalAct/maxAct)*100);
+    return `<div class="top-item">
+      <div class="top-pos ${posClasses[idx]}">${idx+1}</div>
+      <div class="top-info">
+        <div class="top-name" title="${r.adcar}">${adcarLabel(r.adcar)}</div>
+        <div class="top-meta">${segBadge(r.seg)} ${dirBadge(r.dir)}</div>
+        <div style="margin-top:5px;"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%;background:${isPos?'#53CC80':'#F22331'}"></div></div></div>
+      </div>
+      <div class="top-val ${isPos?'positive':'negative'}">${fmtN(r.totalAct)}</div>
+    </div>`;
+  }
+  document.getElementById('top5-positiva').innerHTML=positiva.length?positiva.map((r,i)=>buildItem(r,i,true)).join(''):`<div class="no-data">${t('noData')}</div>`;
+  document.getElementById('top5-mejora').innerHTML=mejora.length?mejora.map((r,i)=>buildItem(r,i,false)).join(''):`<div class="no-data">${t('noData')}</div>`;
+}
+
+// ===================== TABLE =====================
+function pctBar(pct,color){
+  const w=Math.min(pct,100);
+  return `<div style="background:#f3f4f6;border-radius:3px;height:6px;overflow:hidden;"><div style="width:${w}%;height:100%;background:${color};border-radius:3px;"></div></div>`;
+}
+function rankBadge(rank){
+  const colors=['#0000B3','#3333cc','#6666e0'];
+  const bg=['#e6e6ff','#d0d0f5','#f0edff'];
+  const c=rank<=3?colors[rank-1]:'#5a6275';
+  const b=rank<=3?bg[rank-1]:'#f4f5ff';
+  return `<span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:${b};color:${c};font-weight:800;font-size:12px;">${rank}</span>`;
+}
+function semaforo(pct){return pct>=100?'#2aaa60':pct>=50?'#c08800':'#F22331';}
+
+function renderTable(data){
+  const enriched=data.map(r=>{
+    const cte=r.wa+r.correo+r.llamada+r.teams;
+    const totalAct=getTotalAct(r.adcar);
+    const p=r.cli>0?v=>(v/r.cli)*100:()=>0;
+    const pctEc=p(r.ec),pctPp=p(r.pp),pctCc=p(r.cc),pctCte=p(cte),pctPron=r.cvp>0?(r.pron/r.cvp)*100:0;
+    // Ranking ponderado: 20% cada ítem (Est.Cta/Sem, Prom.Pago, Ct.Comercial, Contacto Cliente, Pronóstico), cada uno con tope de 100%
+    const cap=v=>Math.min(v,100);
+    const score=0.2*cap(pctEc)+0.2*cap(pctPp)+0.2*cap(pctCc)+0.2*cap(pctCte)+0.2*cap(pctPron);
+    return{...r,cte,totalAct,pctEc,pctPp,pctCc,pctCte,pctAct:p(totalAct),pctPron,score};
+  }).sort((a,b)=>b.score-a.score);
+
+  document.getElementById('detail-tbody').innerHTML=enriched.map((r,i)=>`<tr>
+    <td class="sticky" style="text-align:center;">${rankBadge(i+1)}</td>
+    <td style="font-weight:600;max-width:130px;overflow:hidden;text-overflow:ellipsis;" title="${r.adcar}">${adcarLabel(r.adcar)}</td>
+    <td>${segBadge(r.seg)}</td>
+    <td>${dirBadge(r.dir)}</td>
+    <td class="num"><strong>${r.cli}</strong></td>
+    <td class="num">${r.ec}</td><td class="num">${pctBar(r.pctEc,semaforo(r.pctEc))}</td>
+    <td class="num">${r.pp}</td><td class="num">${pctBar(r.pctPp,semaforo(r.pctPp))}</td>
+    <td class="num">${r.cc}</td><td class="num">${pctBar(r.pctCc,semaforo(r.pctCc))}</td>
+    <td class="num">${r.wa}</td><td class="num">${r.correo}</td><td class="num">${r.llamada}</td><td class="num">${r.teams}</td>
+    <td class="num"><strong>${r.cte}</strong></td><td class="num">${pctBar(r.pctCte,semaforo(r.pctCte))}</td>
+    <td class="num" style="font-weight:800;color:#0000B3;background:#f4f5ff;">${fmtN(r.totalAct)}</td>
+    <td class="num" style="color:#F22331;font-weight:700;">${fmtC(r.cvp)}</td>
+    <td class="num" style="color:#2aaa60;font-weight:700;">${fmtC(r.pron)}</td>
+    <td class="num">${pctBar(r.pctPron,r.pctPron>=50?'#2aaa60':r.pctPron>=20?'#c08800':'#F22331')}</td>
+    <td class="num" title="${r.score.toFixed(1)}%">${pctBar(r.score,semaforo(r.score))}</td>
+  </tr>`).join('');
+}
+
+// ===================== FILTERS =====================
+function toggleFilter(btn){
+  const type=btn.dataset.type,value=btn.dataset.value,list=activeFilters[type],idx=list.indexOf(value);
+  if(idx===-1){list.push(value);btn.classList.add('active');}else{list.splice(idx,1);btn.classList.remove('active');}
+  applyFilters();
+}
+function clearFilters(){
+  activeFilters={seg:[],dir:[]};
+  document.querySelectorAll('.filter-btn[data-type]').forEach(b=>b.classList.remove('active'));
+  applyFilters();
+}
+function applyFilters(){
+  const data=getFiltered();
+  const bar=document.getElementById('active-filters-bar');
+  const parts=[];
+  if(activeFilters.seg.length) parts.push(t('fSeg')+': '+activeFilters.seg.map(segName).join(', '));
+  if(activeFilters.dir.length) parts.push(t('fDir')+': '+activeFilters.dir.map(dirName).join(', '));
+  if(parts.length){bar.innerHTML='🔍 '+t('activeFilters')+': '+parts.join(' &nbsp;|&nbsp; ')+` &nbsp;<strong>(${new Set(data.map(r=>normN(r.adcar))).size} ADCARs)</strong>`;bar.classList.add('visible');}
+  else{bar.classList.remove('visible');}
+  updateKPIs(data);
+  updateContactChips(data);
+  renderCumplimiento(data);
+  renderTendencia(data);
+  renderContactoTipo(data);
+  renderTop5(data);
+  renderTable(data);
+}
+
+// ===================== INIT =====================
+window.addEventListener('load',()=>{
+  initCharts();
+  applyLang();
+  window.addEventListener('resize',()=>{Object.values(charts).forEach(c=>c.resize());});
+});
+</script>
+</body>
+</html>
