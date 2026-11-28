@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Informe Gerencial — Segmento Construcción · Avance Noviembre 2026 (corte 25 Nov)</title>
+<style>
+  :root {
+    --bg:#ffffff; --card:#ffffff; --border:#d0d7de; --text:#1a1a2e; --muted:#5a6275;
+    --accent:#0000B3; --red:#F22331; --green:#53CC80; --orange:#FFB000; --purple:#9A4CF5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;}
+  .header{background:#3B6FD4;color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;}
+  .header .subtitle{font-size:12px;color:#e6eeff;margin-top:2px;}
+  .header .badge{background:#F22331;color:#fff;font-size:11px;padding:3px 10px;border-radius:12px;font-weight:600;}
+  .lang-switch{display:inline-flex;border:1px solid rgba(255,255,255,.7);border-radius:12px;overflow:hidden;}
+  .lang-switch button{background:transparent;color:#fff;border:none;padding:3px 9px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.4px;}
+  .lang-switch button.active{background:#fff;color:#3B6FD4;}
+  .filters-bar{background:var(--card);border-bottom:1px solid var(--border);padding:12px 28px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .filter-group{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .filter-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-right:4px;}
+  .filter-btn{padding:5px 13px;border-radius:16px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:12px;cursor:pointer;font-weight:500;white-space:nowrap;}
+  .filter-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .filter-btn.fixed{cursor:default;}
+  .filter-btn.fixed:hover{color:#fff;border-color:var(--accent);}
+  .filter-btn.clear-btn{background:#fde8ea;border-color:#F22331;color:#F22331;font-weight:600;}
+  .filter-btn.clear-btn:hover{background:#F22331;color:#fff;}
+  .filter-divider{width:1px;height:24px;background:var(--border);margin:0 4px;}
+  .main{padding:20px 28px;max-width:1400px;margin:0 auto;}
+  .kpi-section{margin-bottom:24px;}
+  .kpi-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;}
+  .kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;}
+  @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+  .kpi-card{border:1px solid var(--border);border-radius:10px;padding:18px 20px;border-left-width:4px;background:transparent;}
+  .kpi-card.blue{border-left-color:var(--accent);}
+  .kpi-card.lblue{border-left-color:#398EF4;}
+  .kpi-card.green{border-left-color:var(--green);}
+  .kpi-card.orange{border-left-color:var(--orange);}
+  .kpi-card.purple{border-left-color:var(--purple);}
+  .kpi-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+  .kpi-card.blue .kpi-label,.kpi-card.blue .kpi-value{color:var(--accent);}
+  .kpi-card.lblue .kpi-label,.kpi-card.lblue .kpi-value{color:#1a5c9e;}
+  .kpi-card.green .kpi-label,.kpi-card.green .kpi-value{color:#1a8c48;}
+  .kpi-card.orange .kpi-label{color:#a07000;} .kpi-card.orange .kpi-value{color:#a07000;}
+  .kpi-card.purple .kpi-label,.kpi-card.purple .kpi-value{color:#6a2fcf;}
+  .kpi-value{font-size:26px;font-weight:800;line-height:1.1;margin-bottom:6px;}
+  .kpi-sub{font-size:11px;color:var(--muted);}
+  .sum-item{background:#f8fafc;border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;}
+  .section{margin-bottom:24px;}
+  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .section-title{font-size:15px;font-weight:700;color:var(--text);}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
+  .card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .card-title .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  /* Panel de cumplimiento total */
+  .total-panel{display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:#f4f7ff;border:1.5px solid #8DB8F2;border-left:6px solid #3B6FD4;border-radius:10px;padding:14px 20px;margin-bottom:18px;}
+  .total-left{min-width:170px;}
+  .total-left .t-lbl{font-size:11px;font-weight:800;color:#3B6FD4;text-transform:uppercase;letter-spacing:.6px;}
+  .total-left .t-pct{font-size:44px;font-weight:800;line-height:1.1;}
+  .total-left .t-state{font-size:12px;font-weight:700;}
+  .total-right{flex:1;min-width:300px;}
+  .trk{position:relative;height:34px;background:#e3ebfa;border-radius:6px;}
+  .trk .fill{position:absolute;left:0;top:0;height:100%;border-radius:6px;min-width:2px;}
+  .trk .val{position:absolute;top:50%;transform:translateY(-50%);font-size:15px;font-weight:800;white-space:nowrap;}
+  .ticks{position:relative;height:20px;margin-top:6px;}
+  .ticks span{position:absolute;top:0;transform:translateX(-50%);font-size:11px;color:var(--muted);}
+  /* Avance por dirección */
+  .sub-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;}
+  .seg-chart{--nameW:150px;}
+  .brow{display:grid;grid-template-columns:var(--nameW) 1fr;align-items:center;height:46px;}
+  .brow .bname{text-align:right;padding-right:8px;font-size:12px;font-weight:700;}
+  .brow .bplot{position:relative;height:100%;border-left:1px solid #9aa0aa;
+    background-image:linear-gradient(to right,#eef0f3 1px,transparent 1px);background-size:20% 100%;background-repeat:repeat-x;
+    border-right:1px solid #eef0f3;}
+  .brow .bfill{position:absolute;left:0;top:7px;height:32px;min-width:2px;}
+  .brow .bval{position:absolute;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;white-space:nowrap;}
+  .seg-ticks{position:relative;height:20px;margin-left:var(--nameW);margin-top:4px;}
+  .seg-ticks span{position:absolute;top:0;transform:translateX(-50%);font-size:11px;color:var(--muted);}
+  /* Semáforo */
+  .sem-wrap{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);}
+  .sem-title{font-size:11px;font-weight:800;color:#3B6FD4;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;}
+  .sem-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .sem-dot{width:14px;height:14px;border-radius:50%;display:inline-block;}
+  .sem-row .op{font-size:15px;color:var(--muted);}
+  .sem-row input{width:76px;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;color:var(--text);}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div style="font-size:18px;font-weight:800;color:#fff;"><span>&#128202;</span> <span data-i18n="hdrTitle">Informe Gerencial de Seguimiento</span></div>
+    <div class="subtitle" data-i18n="hdrSub">Segmento Construcción · Cartera Vencida · Avance de Noviembre 2026 (01-25 Nov)</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="badge" data-i18n="badge">Corte 25 Nov 2026</div>
+    <div class="lang-switch" role="group" aria-label="Language / Idioma">
+      <button type="button" id="lang-es" class="active" onclick="setLang('es')" title="Español">ES</button>
+      <button type="button" id="lang-en" onclick="setLang('en')" title="English">EN</button>
+    </div>
+  </div>
+</div>
+
+<div class="filters-bar">
+  <span class="filter-label" data-i18n="fSeg">Segmento</span>
+  <div class="filter-group">
+    <button class="filter-btn active fixed" type="button" data-i18n="segCons">Construcción</button>
+  </div>
+  <div class="filter-divider"></div>
+  <span class="filter-label" data-i18n="fDir">Dirección</span>
+  <div class="filter-group">
+    <button class="filter-btn" type="button" data-dir="Norte-Bajio" onclick="toggleFilter(this)" data-i18n="dirNB">Norte-Bajío</button>
+    <button class="filter-btn" type="button" data-dir="Centro-Sur" onclick="toggleFilter(this)" data-i18n="dirCS">Centro-Sur</button>
+    <button class="filter-btn" type="button" data-dir="Pacifico" onclick="toggleFilter(this)" data-i18n="dirPac">Pacífico</button>
+  </div>
+  <div class="filter-divider"></div>
+  <button class="filter-btn clear-btn" type="button" onclick="clearFilters()"><span>&#10006;</span> <span data-i18n="clearF">Borrar filtros</span></button>
+</div>
+
+<div class="main">
+
+  <div class="kpi-section">
+    <div class="kpi-title" data-i18n="kpiTitle">Resumen Construcción — Avance de Noviembre 2026 (corte 25 Nov)</div>
+    <div class="kpi-grid">
+      <div class="kpi-card blue">
+        <div class="kpi-label" data-i18n="kpiTot">Total Cartera</div>
+        <div class="kpi-value" id="kpi-total">-</div>
+        <div class="kpi-sub" id="kpi-sub-total">-</div>
+      </div>
+      <div class="kpi-card lblue">
+        <div class="kpi-label" data-i18n="kpiVenc">Cartera Vencida</div>
+        <div class="kpi-value" id="kpi-venc">-</div>
+        <div class="kpi-sub" data-i18n="kpiVencSub">Cartera vencida del segmento</div>
+      </div>
+      <div class="kpi-card purple">
+        <div class="kpi-label" data-i18n="kpiCvp">CVP al 30 Nov</div>
+        <div class="kpi-value" id="kpi-cvp">-</div>
+        <div class="kpi-sub" data-i18n="kpiCvpSub">Cartera vencida proyectada</div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="kpi-label" data-i18n="kpiPron">Pronóstico</div>
+        <div class="kpi-value" id="kpi-pron">-</div>
+        <div class="kpi-sub" data-i18n="kpiPronSub">Meta de recaudo proyectada</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label" data-i18n="kpiFalta">Falta por recaudar</div>
+        <div class="kpi-value" id="kpi-falta">-</div>
+        <div class="kpi-sub" data-i18n="kpiFaltaSub">CVP al 30 Nov − Pronóstico</div>
+      </div>
+      <div class="kpi-card" id="kpi-card-cumpl" style="border-left-color:var(--red);">
+        <div class="kpi-label" id="kpi-cumpl-lbl" style="color:var(--red);" data-i18n="kpiCumpl">Cumplimiento Pronóstico</div>
+        <div class="kpi-value" id="kpi-cumpl" style="color:var(--red);">-</div>
+        <div class="kpi-sub" data-i18n="kpiCumplSub">Pronóstico ÷ CVP al 30 Nov</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted);">
+      <span class="filter-label" style="margin-right:2px;" data-i18n="cutTimes">Horarios de corte</span>
+      <span class="sum-item">&#128336; <span data-i18n="cut1">11:00 am</span></span>
+      <span class="sum-item">&#128336; <span data-i18n="cut2">2:00 pm</span></span>
+      <span class="sum-item">&#128336; <span data-i18n="cut3">6:00 pm</span></span>
+      <span class="sum-item">&#128336; <span data-i18n="cut4">10:00 pm</span></span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><div class="section-title"><span>&#127919;</span> <span data-i18n="secCump">Porcentaje de cumplimiento</span></div></div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:#8DB8F2"></span> <span data-i18n="cumpTitle">Porcentaje de cumplimiento</span> <span style="font-size:11px;color:var(--muted);font-weight:400;" data-i18n="cumpNote">· Pronóstico ÷ CVP al 30 Nov · avance al corte del 25 de noviembre de 2026</span></div>
+
+      <div class="total-panel">
+        <div class="total-left">
+          <div class="t-lbl" data-i18n="cumpTotal">Cumplimiento Total General</div>
+          <div class="t-pct" id="cump-total-pct">-</div>
+          <div class="t-state" id="cump-total-estado"></div>
+        </div>
+        <div class="total-right" id="total-chart"></div>
+      </div>
+
+      <div class="sub-title" data-i18n="dirProgress">Avance por dirección</div>
+      <div class="seg-chart" id="dir-chart"></div>
+
+      <div class="sem-wrap">
+        <div class="sem-title" data-i18n="semTitle">Semáforo % cumplimiento pronóstico</div>
+        <div class="sem-row">
+          <span class="sem-dot" style="background:#F22331;"></span>
+          <span class="op">&le;</span>
+          <input type="number" id="sem-red" value="60" min="0" step="1" oninput="onSemChange()">
+          <span class="sem-dot" style="background:#FFB000;margin-left:10px;"></span>
+          <span id="sem-yellow-range" class="op" style="min-width:96px;">&gt; 60 y &lt; 90</span>
+          <span class="sem-dot" style="background:#53CC80;margin-left:10px;"></span>
+          <span class="op">&ge;</span>
+          <input type="number" id="sem-green" value="90" min="0" step="1" oninput="onSemChange()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===================== DATOS =====================
+// Fuente: libro "27 REPCAR 30 NOV 757P_Salida.xlsx" · hoja "Dinámica" (tabla dinámica por DIRECCION CTA) · segmento Construcción
+// Filtros de la tabla dinámica: PAIS = COL · STATUS = todos excepto FAE, CARTERA LEGAL MX y CONTADO MX
+// pron = columna "Pronóstico" · cvp = "Suma de CVP 30 NOV" · falta = "Falta por recaudar" (= cvp − pron)
+const DATA = [
+  {dir:'Centro-Sur',  total:207098063.73, venc:30106973.20, cvp:34828304.55, pron:14685959.84},
+  {dir:'Norte-Bajio', total:182644925.89, venc:21616991.43, cvp:26094367.64, pron:15066257.76},
+  {dir:'Pacifico',    total:269260653.27, venc:42533090.19, cvp:52207487.58, pron:17473437.34}
+];
+// Total general: Total Cartera 659,003,642.89 · Cart. Vencida 94,257,054.82 · CVP 30 NOV 113,130,159.77 · Pronóstico 47,225,654.94 · Falta por recaudar 65,904,504.83
+
+// ===================== IDIOMA / LANGUAGE =====================
+const I18N = {
+  es:{
+    title:'Informe Gerencial — Segmento Construcción · Avance Noviembre 2026 (corte 25 Nov)',
+    hdrTitle:'Informe Gerencial de Seguimiento',
+    hdrSub:'Segmento Construcción · Cartera Vencida · Avance de Noviembre 2026 (01-25 Nov)',
+    badge:'Corte 25 Nov 2026',
+    fSeg:'Segmento',fDir:'Dirección',clearF:'Borrar filtros',
+    segCons:'Construcción',dirNB:'Norte-Bajío',dirCS:'Centro-Sur',dirPac:'Pacífico',
+    kpiTitle:'Resumen Construcción — Avance de Noviembre 2026 (corte 25 Nov)',
+    kpiTot:'Total Cartera',kpiVenc:'Cartera Vencida',kpiVencSub:'Cartera vencida del segmento',
+    kpiCvp:'CVP al 30 Nov',kpiCvpSub:'Cartera vencida proyectada',
+    kpiPron:'Pronóstico',kpiPronSub:'Meta de recaudo proyectada',
+    kpiFalta:'Falta por recaudar',kpiFaltaSub:'CVP al 30 Nov − Pronóstico',
+    kpiCumpl:'Cumplimiento Pronóstico',kpiCumplSub:'Pronóstico ÷ CVP al 30 Nov',
+    dirUnit:'dirección(es)',
+    cutTimes:'Horarios de corte',cut1:'11:00 am',cut2:'2:00 pm',cut3:'6:00 pm',cut4:'10:00 pm',
+    secCump:'Porcentaje de cumplimiento',cumpTitle:'Porcentaje de cumplimiento',
+    cumpNote:'· Pronóstico ÷ CVP al 30 Nov · avance al corte del 25 de noviembre de 2026',
+    cumpTotal:'Cumplimiento Total General',stOk:'En cumplimiento',stRisk:'En riesgo',stBad:'Incumplimiento',
+    dirProgress:'Avance por dirección',semTitle:'Semáforo % cumplimiento pronóstico',and:'y',
+    tipForecast:'Pronóstico (Meta)',tipPortfolio:'CVP al 30 Nov',tipCompliance:'Porcentaje de cumplimiento',grandTotal:'Total General'
+  },
+  en:{
+    title:'Management Report — Construction Segment · November 2026 Progress (cut-off Nov 25)',
+    hdrTitle:'Management Follow-up Report',
+    hdrSub:'Construction Segment · Overdue Portfolio · November 2026 Progress (Nov 1-25)',
+    badge:'Cut-off Nov 25, 2026',
+    fSeg:'Segment',fDir:'Region',clearF:'Clear filters',
+    segCons:'Construction',dirNB:'North-Bajío',dirCS:'Center-South',dirPac:'Pacific',
+    kpiTitle:'Construction Summary — November 2026 Progress (cut-off Nov 25)',
+    kpiTot:'Total Portfolio',kpiVenc:'Overdue Portfolio',kpiVencSub:'Segment overdue portfolio',
+    kpiCvp:'CVP as of Nov 30',kpiCvpSub:'Projected overdue portfolio',
+    kpiPron:'Forecast',kpiPronSub:'Projected collection target',
+    kpiFalta:'Remaining to collect',kpiFaltaSub:'CVP as of Nov 30 − Forecast',
+    kpiCumpl:'Forecast Compliance',kpiCumplSub:'Forecast ÷ CVP as of Nov 30',
+    dirUnit:'region(s)',
+    cutTimes:'Cut-off times',cut1:'11:00 AM',cut2:'2:00 PM',cut3:'6:00 PM',cut4:'10:00 PM',
+    secCump:'Compliance percentage',cumpTitle:'Compliance percentage',
+    cumpNote:'· Forecast ÷ CVP as of Nov 30 · progress as of the Nov 25, 2026 cut-off',
+    cumpTotal:'Overall Total Compliance',stOk:'On target',stRisk:'At risk',stBad:'Non-compliance',
+    dirProgress:'Progress by region',semTitle:'Forecast compliance % traffic light',and:'and',
+    tipForecast:'Forecast (Target)',tipPortfolio:'CVP as of Nov 30',tipCompliance:'Compliance percentage',grandTotal:'Grand Total'
+  }
+};
+let LANG = 'es';
+function t(k){return (I18N[LANG] && I18N[LANG][k]) ?? I18N.es[k] ?? k;}
+function loc(){return LANG==='en' ? 'en-US' : 'es-CO';}
+function dirName(d){return t(d==='Norte-Bajio'?'dirNB':d==='Centro-Sur'?'dirCS':'dirPac');}
+
+function applyLang(){
+  document.documentElement.lang = LANG;
+  document.title = t('title');
+  document.querySelectorAll('[data-i18n]').forEach(e=>{e.textContent = t(e.dataset.i18n);});
+  document.getElementById('lang-es').classList.toggle('active', LANG==='es');
+  document.getElementById('lang-en').classList.toggle('active', LANG==='en');
+  updateSemRange();
+  render();
+}
+function setLang(l){LANG = l; applyLang();}
+
+// ===================== FILTROS =====================
+let activeDirs = [];
+function toggleFilter(btn){
+  const v = btn.dataset.dir;
+  const i = activeDirs.indexOf(v);
+  if(i>=0){activeDirs.splice(i,1);} else {activeDirs.push(v);}
+  btn.classList.toggle('active', i<0);
+  render();
+}
+function clearFilters(){
+  activeDirs = [];
+  document.querySelectorAll('.filter-btn[data-dir]').forEach(b=>b.classList.remove('active'));
+  render();
+}
+function getFiltered(){
+  return DATA.filter(r=>activeDirs.length===0 || activeDirs.includes(r.dir));
+}
+
+// ===================== UTILIDADES =====================
+function fmtC(v){
+  if(v>=1e9) return '$'+(v/1e9).toFixed(1)+'B';
+  if(v>=1e6) return '$'+(v/1e6).toFixed(1)+'M';
+  if(v===0) return '$0';
+  return '$'+v.toLocaleString(loc(),{maximumFractionDigits:0});
+}
+
+// Semáforo editable: ≤ umbral rojo → rojo · > umbral rojo y < umbral verde → amarillo · ≥ umbral verde → verde
+const SEM = {red:60, green:90};
+function updateSemRange(){
+  document.getElementById('sem-yellow-range').textContent = '> '+SEM.red+' '+t('and')+' < '+SEM.green;
+}
+function onSemChange(){
+  const r = parseFloat(document.getElementById('sem-red').value);
+  const g = parseFloat(document.getElementById('sem-green').value);
+  if(!isNaN(r)) SEM.red = r;
+  if(!isNaN(g)) SEM.green = g;
+  updateSemRange();
+  render();
+}
+function semCump(p){return p>=SEM.green ? '#53CC80' : p<=SEM.red ? '#F22331' : '#FFB000';}
+// Tonos suaves para el relleno de las barras (el texto conserva el color fuerte del semáforo)
+function semCumpSoft(p){return p>=SEM.green ? '#9BE0B6' : p<=SEM.red ? '#F22331' : '#FFD27A';}
+
+function ticksHTML(xMax){
+  let h = '';
+  for(let i=0;i<=5;i++){
+    h += '<span style="left:'+(i*20)+'%">'+Math.round(xMax*i/5)+'%</span>';
+  }
+  return h;
+}
+
+// ===================== RENDER =====================
+function render(){
+  const data = getFiltered();
+  const sum = k => data.reduce((s,r)=>s+r[k],0);
+  const total = sum('total'), venc = sum('venc'), cvp = sum('cvp'), pron = sum('pron');
+  const falta = cvp - pron;
+  const pct = cvp>0 ? (pron/cvp)*100 : 0;
+
+  // KPIs
+  document.getElementById('kpi-total').textContent = fmtC(total);
+  document.getElementById('kpi-sub-total').textContent = t('segCons')+' · '+data.length+' '+t('dirUnit');
+  document.getElementById('kpi-venc').textContent = fmtC(venc);
+  document.getElementById('kpi-cvp').textContent = fmtC(cvp);
+  document.getElementById('kpi-pron').textContent = fmtC(pron);
+  document.getElementById('kpi-falta').textContent = fmtC(falta);
+  const tColor = semCump(pct);
+  document.getElementById('kpi-card-cumpl').style.borderLeftColor = tColor;
+  document.getElementById('kpi-cumpl-lbl').style.color = tColor;
+  const kc = document.getElementById('kpi-cumpl');
+  kc.textContent = pct.toFixed(1)+'%';
+  kc.style.color = tColor;
+
+  // Estadísticas por dirección
+  const stats = data.map(r=>({name:dirName(r.dir), pron:r.pron, cart:r.cvp, pct:r.cvp>0 ? (r.pron/r.cvp)*100 : 0}));
+  const totalStat = {name:t('grandTotal'), pron:pron, cart:cvp, pct:pct};
+  const tip = s => s.name+'\n'+t('tipForecast')+': '+fmtC(s.pron)+'\n'+t('tipPortfolio')+': '+fmtC(s.cart)+'\n'+t('tipCompliance')+': '+s.pct.toFixed(1)+'%';
+  // Misma escala en ambas gráficas para que las barras sean comparables
+  const xMax = Math.max(100, Math.ceil(Math.max(pct, ...stats.map(s=>s.pct))/10)*10);
+
+  // Panel de cumplimiento total
+  const pctEl = document.getElementById('cump-total-pct');
+  pctEl.textContent = pct.toFixed(1)+'%';
+  pctEl.style.color = tColor;
+  const estEl = document.getElementById('cump-total-estado');
+  estEl.textContent = pct>=SEM.green ? t('stOk') : pct>SEM.red ? t('stRisk') : t('stBad');
+  estEl.style.color = tColor;
+  const wTot = Math.min(100, pct/xMax*100);
+  document.getElementById('total-chart').innerHTML =
+    '<div class="trk" title="'+tip(totalStat).replace(/\n/g,'&#10;')+'">'+
+      '<div class="fill" style="width:'+wTot+'%;background:'+semCumpSoft(pct)+'"></div>'+
+      '<span class="val" style="left:calc('+wTot+'% + 6px);color:'+tColor+'">'+pct.toFixed(1)+'%</span>'+
+    '</div>'+
+    '<div class="ticks">'+ticksHTML(xMax)+'</div>';
+
+  // Avance por dirección
+  let rows = '';
+  stats.forEach(s=>{
+    const w = Math.min(100, s.pct/xMax*100);
+    rows +=
+      '<div class="brow">'+
+        '<div class="bname">'+s.name+'</div>'+
+        '<div class="bplot" title="'+tip(s).replace(/\n/g,'&#10;')+'">'+
+          '<div class="bfill" style="width:'+w+'%;background:'+semCumpSoft(s.pct)+'"></div>'+
+          '<span class="bval" style="left:calc('+w+'% + 6px);color:'+semCump(s.pct)+'">'+s.pct.toFixed(1)+'%</span>'+
+        '</div>'+
+      '</div>';
+  });
+  document.getElementById('dir-chart').innerHTML = rows + '<div class="seg-ticks">'+ticksHTML(xMax)+'</div>';
+}
+
+applyLang();
+</script>
+</body>
+</html>
